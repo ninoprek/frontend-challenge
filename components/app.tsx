@@ -1,48 +1,43 @@
-import { useQuery } from "react-query";
+// import { useQuery } from "react-query";
 import CatCardPanel from "../components/catCardPanel";
 import CatCardCreator from "../components/catCardCreator";
 import DemoFooter from "../components/demoFooter";
+import useGetData from "../utils/useGetData";
 import { Inter } from "next/font/google";
 import styles from "@/styles/Home.module.css";
-import { UserData } from "@/types/global";
-const DB_API_URI = "http://localhost:3001";
 const inter = Inter({ subsets: ["latin"] });
+
 // Mock userID for testing.
 const userID = 42;
-
+const getType = "users";
 export default function App() {
-  const endpoint = `${DB_API_URI}/users/${userID}`;
-  const { isLoading, error, data } = useQuery(
-    ["userData", userID],
-    (): Promise<UserData> => fetch(endpoint).then((res) => res.json())
-  );
+  const { isLoading, error, data } = useGetData(userID, getType);
+  console.log('data: ', data);
 
-  if (isLoading) return <div>"Loading..."</div>;
-
-  if (error && error instanceof Error)
-    return <div>{"An error has occurred: " + error.message}</div>;
-
-  if (!data) return <div>No data</div>;
   return (
     <>
-      <div className={styles.main}>
-        <div className={styles.row}>
-          <div className={styles.description}>
-            <h1 className={inter.className}>Cat Club 🐱</h1>
+      { isLoading &&  <div>{`"Loading..."`}</div> }
+      { error && error instanceof Error && <div>{ `An error has occurred: ${error.message}` }</div> }
+      { !isLoading && !error && data &&
+        <div className={styles.main}>
+          <div className={styles.row}>
+            <div className={styles.description}>
+              <h1 className={inter.className}>Cat Club 🐱</h1>
+            </div>
+          </div>
+          <div className={styles.row}>
+            <div className={styles.col}>
+              <CatCardCreator />
+            </div>
+            <div className={styles.col}>
+              <CatCardPanel herd={data.herd} />
+            </div>
+          </div>
+          <div className={styles.row}>
+            <DemoFooter />
           </div>
         </div>
-        <div className={styles.row}>
-          <div className={styles.col}>
-            <CatCardCreator />
-          </div>
-          <div className={styles.col}>
-            <CatCardPanel herd={data.herd} />
-          </div>
-        </div>
-        <div className={styles.row}>
-          <DemoFooter />
-        </div>
-      </div>
+      }
     </>
   );
 }

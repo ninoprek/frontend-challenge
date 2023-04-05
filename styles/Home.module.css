@@ -26,6 +26,11 @@
   padding: 4rem 0;
 }
 
+.image {
+  height: 200px;
+  width: 200px;
+}
+
 
 /* Enable hover only on non-touch devices */
 @media (hover: hover) and (pointer: fine) {

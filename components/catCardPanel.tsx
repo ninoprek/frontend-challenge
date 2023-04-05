@@ -1,4 +1,5 @@
 import { CatCardProps } from "@/types/global";
+import Image from 'next/image';
 
 const CatCard: React.FC<CatCardProps> = ({
   nickname,
@@ -9,8 +10,8 @@ const CatCard: React.FC<CatCardProps> = ({
   return (
     <div>
       <h2>{nickname}</h2>
-      <img src={imageURI} alt={`Picture of ${nickname}`} />
-      {/* 
+      <Image src={imageURI} alt={`Picture of ${nickname}`} width={200} height={200} />
+      {/*
       Monica said to comment these out for now. Maybe we'll use them later.
       <p>Breed: {breed}</p>
       <p>Breed ID: {breedId}</p> */}
@@ -22,7 +23,7 @@ const CatCardPanel = (props: { herd: CatCardProps[] }) => {
   return (
     <>
       {props.herd.map((cat) => (
-        <CatCard {...cat} />
+        <CatCard {...cat} key={cat.imageID}/>
       ))}
     </>
   );
