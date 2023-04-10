@@ -1,34 +1,37 @@
 .main {
+  padding: 2rem 6rem;
+  height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  padding: 6rem;
-  min-height: 100vh;
+  overflow: hidden;
+}
+
+.content {
+  display: flex;
+  flex: 1;
+  overflow-y: auto;
 }
 
 .description {
-  display: inherit;
-  justify-content: inherit;
-  align-items: inherit;
   font-size: 0.85rem;
+  text-align: center;
   max-width: var(--max-width);
   width: 100%;
-  z-index: 2;
   font-family: var(--font-mono);
 }
 
-.center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  padding: 4rem 0;
+.card {
+  margin: 40px;
 }
 
-.image {
-  height: 200px;
-  width: 200px;
+.herd {
+  align-items: end;
+  overflow-y: scroll;
+}
+
+.footer {
+  border: 2px solid;
+  padding: 10px
 }
 
 
@@ -42,13 +45,6 @@
   .card:hover span {
     transform: translateX(4px);
   }
-}
-
-.row {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  width: 100%;
 }
 
 .column {

@@ -1,9 +1,13 @@
 export interface UserData {
   id: number;
-  firstname: string;
+  firstName: string;
   lastname: string;
   wallet: number;
   herd: CatCardProps[];
+}
+
+export interface UsersData {
+  [id: number]: UserData;
 }
 
 export interface CatCardProps {
@@ -14,4 +18,13 @@ export interface CatCardProps {
   breedId?: string;
   width?: number;
   height?: number;
+  className?: string;
+}
+
+export interface FooterProps {
+  changeUser(id:number): void
+}
+
+export interface CardPanelProps {
+  userID: number;
 }

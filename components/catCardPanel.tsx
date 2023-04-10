@@ -1,14 +1,18 @@
-import { CatCardProps } from "@/types/global";
+import { useQuery } from "react-query";
+import { CatCardProps, CardPanelProps, UserData } from "@/types/global";
 import Image from 'next/image';
+import styles from "@/styles/Home.module.css";
 
-const CatCard: React.FC<CatCardProps> = ({
+const DB_API_URI = process.env.NEXT_PUBLIC_DB_API_URI;
+
+const CatCard = ({
   nickname,
   imageURI,
   breed,
   breedId,
-}) => {
+}: CatCardProps) => {
   return (
-    <div>
+    <div className={styles.card}>
       <h2>{nickname}</h2>
       <Image src={imageURI} alt={`Picture of ${nickname}`} width={200} height={200} />
       {/*
@@ -19,12 +23,24 @@ const CatCard: React.FC<CatCardProps> = ({
   );
 };
 
-const CatCardPanel = (props: { herd: CatCardProps[] }) => {
+const CatCardPanel = ({ userID }: CardPanelProps) => {
+
+  const endpoint = `${DB_API_URI}/users/${userID}`;
+
+  const { isLoading, error, data } = useQuery(
+    ["userData", userID],
+    (): Promise<UserData> => fetch(endpoint).then(res => res.json())
+  );
+
   return (
     <>
-      {props.herd.map((cat) => (
-        <CatCard {...cat} key={cat.imageID}/>
-      ))}
+      { isLoading && <div>{`New herd coming in`}</div> }
+      { error && error instanceof Error && <div> {`Where did the cats go?`} </div> }
+      { data &&
+        data.herd.map((cat) => (
+          <CatCard {...cat} key={cat.imageID}/>
+        ))
+      }
     </>
   );
 };
