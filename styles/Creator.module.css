@@ -1,0 +1,24 @@
+.cardCreation {
+  display: flex;
+  flex-direction: column;
+}
+
+.nameInput {
+  margin: 20px 0;
+  width: fit-content;
+}
+
+.refreshButton,
+.saveButton {
+  margin: 20px 0;
+  width: fit-content;
+}
+
+.saveButton {
+  margin: 0 20px 0 0;
+}
+
+.creatorButtons {
+  flex-direction: row;
+}
+

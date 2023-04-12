@@ -10,6 +10,13 @@ export interface UsersData {
   [id: number]: UserData;
 }
 
+export interface CatImageData {
+  id: string;
+  url: string;
+  width: number;
+  height: number;
+}
+
 export interface CatCardProps {
   nickname: string;
   imageID: string;
@@ -22,9 +29,14 @@ export interface CatCardProps {
 }
 
 export interface FooterProps {
-  changeUser(id:number): void
+  changeUser(user: UserData): void
 }
 
 export interface CardPanelProps {
-  userID: number;
+  user: UserData;
 }
+
+export interface CatCardCreatorProps extends CardPanelProps {
+  updateUser(user: UserData): void
+}
+

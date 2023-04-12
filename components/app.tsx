@@ -1,14 +1,14 @@
 import { useState } from "react";
+import { UserData } from "@/types/global";
 import CatCardPanel from "../components/catCardPanel";
 import CatCardCreator from "../components/catCardCreator";
-import DemoFooter from "../components/demoFooter";
 import Footer from "../components/footer";
 import { Inter } from "next/font/google";
 import styles from "@/styles/Home.module.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function App() {
-  const [userID, setUserID] = useState<number | null>(null);
+  const [user, setUser] = useState<UserData | null>(null);
 
   return (
     <>
@@ -16,19 +16,23 @@ export default function App() {
         <div className={styles.description}>
           <h1 className={inter.className}>Cat Club 🐱</h1>
         </div>
-        <div className={styles.content}>
-          <div className={styles.column}>
-            <CatCardCreator />
-          </div>
-          { userID &&
-            <div className={`${styles.column} ${styles.herd}`}>
-              <CatCardPanel userID={ userID } />
+          {
+            user &&
+            <div className={styles.content}>
+              <div className={styles.column}>
+                <CatCardCreator
+                  user={ user }
+                  updateUser={ (user: UserData):void => setUser(user) }
+                />
+              </div>
+                <div className={`${styles.column} ${styles.herdColumn}`}>
+                  <h2>{`${user.firstName}'s herd`}</h2>
+                  <CatCardPanel user={ user } />
+                </div>
             </div>
           }
-        </div>
         <div className={`${styles.row} ${styles.footer}`}>
-          {/* <DemoFooter /> */}
-          <Footer changeUser={ (id: number):void => setUserID(id) }  />
+          <Footer changeUser={ (user: UserData):void => setUser(user) }  />
         </div>
       </div>
     </>

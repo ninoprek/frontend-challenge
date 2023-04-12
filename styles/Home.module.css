@@ -53,3 +53,7 @@
   flex-basis: 100%;
   flex: 1;
 }
+
+.herdColumn {
+  align-items: end;
+}

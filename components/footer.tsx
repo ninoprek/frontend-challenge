@@ -13,16 +13,17 @@ const Footer = ({ changeUser }: FooterProps) => {
   );
 
   useEffect(() => {
-    if (data) changeUser(data[0].id);
+    if (data) changeUser(data[0]);
   }, [data]);
 
   function handleOnChange(e: React.ChangeEvent<HTMLSelectElement>) {
-    changeUser(parseInt(e.target.value));
+    const user = data?.find(({ id }) => id === parseInt(e.target.value));
+    if (user) changeUser(user);
   }
 
   return (
     <>
-      { isLoading && <div>{`Loading...`}</div> }
+      { isLoading && <div>{"Loading..."}</div> }
       { error && error instanceof Error && <div> {`Error: ${error.message}`} </div> }
       { !isLoading && data &&
         <div>

@@ -5,7 +5,20 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 
 export default function App({ Component, pageProps }: AppProps) {
-  const [queryClient] = React.useState(() => new QueryClient());
+  const twentyFourHoursInMs = 1000 * 60 * 60 * 24;
+  const [queryClient] = React.useState(() => new QueryClient(
+    {
+      defaultOptions: {
+        queries: {
+          refetchOnWindowFocus: false,
+          refetchOnMount: false,
+          refetchOnReconnect: false,
+          retry: false,
+          staleTime: twentyFourHoursInMs,
+        },
+      },
+    })
+  );
   return (
     <QueryClientProvider client={queryClient}>
       <Component {...pageProps} />
