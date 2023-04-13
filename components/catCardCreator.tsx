@@ -1,19 +1,31 @@
-import Image from 'next/image';
-import styles from "@/styles/Creator.module.css";
+import { useState } from "react";
 import { useQuery } from "react-query";
 import { CatImageData, UserData, CatCardCreatorProps, CatCardProps } from "@/types/global";
+import Image from 'next/image';
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
+import IconButton from '@mui/material/IconButton';
+import RefreshIcon from "@mui/icons-material/Refresh";
+import SaveIcon from '@mui/icons-material/Save';
+import styles from "@/styles/Creator.module.css";
 import blurImage from "../public/blur.png"
 
 const CAT_API_URL = process.env.NEXT_PUBLIC_THECATAPI_RANDOM_IMAGE!;
+const CAT_API_ORIGIN = process.env.NEXT_PUBLIC_THECATAPI_ORIGIN!;
 const THECATAPI_KEY = process.env.NEXT_PUBLIC_THECATAPI_KEY!;
 const DB_API_URI = process.env.NEXT_PUBLIC_DB_API_URI!;
 
 const CatCardCreator = ({ user, updateUser }: CatCardCreatorProps) => {
+  let [success, setSuccess] = useState<boolean | null>(null);
+  let [successMessage, setSuccessMessage] = useState<string | null>(null);
+  let [fail, setFail] = useState<boolean | null>(null);
+  let [failMessage, setFailMessage] = useState<string | null>(null);
   let catImage: CatImageData | undefined;
 
   const getCatImage = async ():Promise<Array<CatImageData>> => {
     const requestHeaders: HeadersInit = new Headers();
     requestHeaders.set("X-Auth-Token", THECATAPI_KEY);
+    requestHeaders.set("Origin", CAT_API_ORIGIN);
     const res = fetch(encodeURI(CAT_API_URL), {
       method: "GET",
       headers: requestHeaders
@@ -26,9 +38,11 @@ const CatCardCreator = ({ user, updateUser }: CatCardCreatorProps) => {
 
     const data: UserData = { ...user };
 
+    const catExsists = data.herd.find(cat => cat.nickname === catNickname);
+    if (catExsists) throw new Error(`Cat with the nickname <strong>${catNickname}</strong> already exsists`);
+
     const requestHeaders: HeadersInit = new Headers();
     requestHeaders.set("Content-Type", "application/json");
-
 
     const catData: CatCardProps = {
       nickname: catNickname,
@@ -37,15 +51,14 @@ const CatCardCreator = ({ user, updateUser }: CatCardCreatorProps) => {
       width: catImage!.width,
       height: catImage!.height,
     }
-
     data.herd.unshift(catData);
 
-    const res = fetch(encodeURI(`${DB_API_URI}/users/${data.id}`), {
+    const resp = fetch(encodeURI(`${DB_API_URI}/users/${data.id}`), {
       method: "PUT",
       headers: requestHeaders,
       body: JSON.stringify(data)
     })
-    return (await res).json();
+    return (await resp).json();
   }
 
   const handleSaveCat = async () => {
@@ -53,18 +66,31 @@ const CatCardCreator = ({ user, updateUser }: CatCardCreatorProps) => {
     const nickName = nicknameInput.value;
     const resp = saveNewCat(nickName);
     resp.then((rsp) => {
+      setSuccess(true);
+      setSuccessMessage(`Cat <strong>${nickName}</strong> has been added to the herd!`)
       updateUser(rsp);
       refetch();
       nicknameInput.value = "";
-      alert(`Cat ${nickName} has been added to the herd!`);
+      closeMessage(true);
     }).catch(err => {
-      alert(err.message);
+      setFail(true);
+      setFailMessage(err.message);
+      nicknameInput.value = "";
+      nicknameInput.focus();
+      closeMessage(false);
     });
   }
 
   const handleClick = () => {
     refetch();
   };
+
+  const closeMessage = (fromSuccess: boolean):void => {
+    setTimeout(() => {
+      if (fromSuccess) setSuccess(false);
+      else setFail(false);
+    }, 5000)
+  }
 
   const {data, error, isLoading, refetch} = useQuery('randomCatImage', getCatImage);
 
@@ -88,8 +114,41 @@ const CatCardCreator = ({ user, updateUser }: CatCardCreatorProps) => {
                   height={200}
           />
           <div className={styles.creatorButtons}>
-            <button className={styles.saveButton} onClick={handleSaveCat}>{"Save cat"}</button>
-            <button className={styles.refreshButton} onClick={handleClick}>{"Reload cat image"}</button>
+            <IconButton
+              className={styles.saveButton}
+              onClick={handleSaveCat}
+              color="primary"
+              aria-label="upload picture"
+              component="label"
+            ><SaveIcon
+              color="success"/>
+            </IconButton>
+            <IconButton
+              className={styles.refreshButton}
+              onClick={handleClick}
+              color="primary"
+              aria-label="upload picture"
+              component="label"
+            ><RefreshIcon />
+            </IconButton>
+          </div>
+          <div>
+            { success && successMessage &&
+              <Alert  severity="success"
+                      onClose={() => { setSuccess(false); }}
+              >
+                <AlertTitle>Meaw!! 😻</AlertTitle>
+                <div dangerouslySetInnerHTML={{__html: successMessage}}></div>
+              </Alert>
+            }
+            { fail && failMessage &&
+              <Alert  severity="error"
+                      onClose={() => { setFail(false); }}
+              >
+                <AlertTitle>Oh meaw!! 🙀</AlertTitle>
+                <div dangerouslySetInnerHTML={{__html: failMessage}}></div>
+              </Alert>
+            }
           </div>
         </div>
       }
