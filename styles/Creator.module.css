@@ -1,16 +1,28 @@
-.cardCreation {
+.cardCreationContent {
   display: flex;
+  margin: 0 auto;
+  position: relative;
   flex-direction: column;
+  border-radius: 20px;
+  padding: 20px 40px 10px 40px;
+  min-width: 500px;
+  text-align: center;
+  background-color: white;
 }
 
 .nameInput {
-  margin: 20px 0;
+  margin: 0 auto 20px auto;
+  padding: 5px 10px;
+  border-radius: 10px;
+  border: 1px solid;
   width: fit-content;
+  background-color: azure;
+  color: black;
 }
 
 .refreshButton,
 .saveButton {
-  margin: 20px 0;
+  margin: 40px 0;
   width: fit-content;
 }
 
@@ -19,6 +31,19 @@
 }
 
 .creatorButtons {
+  display: flex;
   flex-direction: row;
+  justify-content: flex-end;
+  margin: 10px 0 0 0;
 }
 
+.creatorImage {
+  position: relative;
+  margin: auto;
+  height: 300px;
+  width: auto;
+}
+
+.imageShadow {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}

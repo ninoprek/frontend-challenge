@@ -1,0 +1,46 @@
+.cardContent {
+  margin: 40px;
+  /* border: 2px solid; */
+  padding: 20px 30px 30px 30px;
+  border-radius: 10px;
+  background-color: white;
+}
+
+.card {
+  position: relative;
+  height: 250px;
+  width: 300px;
+  transition: transform .2s;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .card:hover {
+    transform: scale(1.05);
+  }
+
+  .card:hover span {
+    transform: translateX(4px);
+  }
+}
+
+.herdImage {
+  position: relative;
+  width: auto;
+}
+
+.imageShadow {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.herd {
+  align-items: flex-end;
+  overflow-y: scroll;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  background-color: floralwhite;
+}
+
+.catNickname {
+  text-align: center;
+  padding: 0 0 15px 0;
+}

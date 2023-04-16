@@ -1,0 +1,16 @@
+.footerContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 0
+}
+
+.userDropdown {
+  padding: 5px 10px;
+  margin: 0 0 0 20px;
+  border-radius: 10px;
+  border: 1px solid;
+  width: fit-content;
+  background-color: azure;
+  color: black;
+}

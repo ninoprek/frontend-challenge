@@ -8,43 +8,33 @@
 
 .content {
   display: flex;
+  padding: 40px 0 0 0;
   flex: 1;
   overflow-y: auto;
+  background-color: blanchedalmond;
 }
 
 .description {
-  font-size: 0.85rem;
+  display: flex;
+  flex-direction: row;
+  font-size: 1rem;
   text-align: center;
-  max-width: var(--max-width);
+  margin: 0 0 20px 0;
   width: 100%;
   font-family: var(--font-mono);
 }
 
-.card {
-  margin: 40px;
-}
-
-.herd {
-  align-items: end;
-  overflow-y: scroll;
+.createTitle {
+  text-align: center;
+  padding: 10px 20px;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  background-color: white;
 }
 
 .footer {
-  border: 2px solid;
-  padding: 10px
-}
-
-
-/* Enable hover only on non-touch devices */
-@media (hover: hover) and (pointer: fine) {
-  .card:hover {
-    background: rgba(var(--card-rgb), 0.1);
-    border: 1px solid rgba(var(--card-border-rgb), 0.15);
-  }
-
-  .card:hover span {
-    transform: translateX(4px);
-  }
+  border: 1px solid black;
+  padding: 20px;
 }
 
 .column {
@@ -54,6 +44,18 @@
   flex: 1;
 }
 
+.createColumn {
+  align-items: center;
+}
+
 .herdColumn {
-  align-items: end;
+  align-items: center;
+  margin: 0 20px;
+}
+
+.herdOwner {
+  padding: 10px 20px;
+  background-color: floralwhite;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
 }

@@ -8,7 +8,6 @@ import IconButton from '@mui/material/IconButton';
 import RefreshIcon from "@mui/icons-material/Refresh";
 import SaveIcon from '@mui/icons-material/Save';
 import styles from "@/styles/Creator.module.css";
-import blurImage from "../public/blur.png"
 
 const CAT_API_URL = process.env.NEXT_PUBLIC_THECATAPI_RANDOM_IMAGE!;
 const CAT_API_ORIGIN = process.env.NEXT_PUBLIC_THECATAPI_ORIGIN!;
@@ -38,7 +37,7 @@ const CatCardCreator = ({ user, updateUser }: CatCardCreatorProps) => {
 
     const data: UserData = { ...user };
 
-    const catExsists = data.herd.find(cat => cat.nickname === catNickname);
+    const catExsists = data.herd.find(cat => cat.nickname.toLowerCase() === catNickname.toLowerCase());
     if (catExsists) throw new Error(`Cat with the nickname <strong>${catNickname}</strong> already exsists`);
 
     const requestHeaders: HeadersInit = new Headers();
@@ -89,48 +88,56 @@ const CatCardCreator = ({ user, updateUser }: CatCardCreatorProps) => {
     setTimeout(() => {
       if (fromSuccess) setSuccess(false);
       else setFail(false);
-    }, 5000)
+    }, 10000)
   }
 
   const {data, error, isLoading, refetch} = useQuery('randomCatImage', getCatImage);
 
   if (data) {
     catImage = data[0];
+    console.log('cat img', catImage);
+
   }
 
   return (
     <>
-      { isLoading && <div>{"Loading Image..."}</div> }
-      { error && error instanceof Error && <div> {`Cant load the image: ${error.message}`}</div> }
+      { isLoading && <div className={styles.cardCreationContent}>{"Loading Image..."}</div> }
+      { error && error instanceof Error && <div className={styles.cardCreationContent}> {`Cant load the image: ${error.message}`}</div> }
       { !isLoading && catImage &&
-        <div className={styles.cardCreation}>
-          <input id="catNickname" className={styles.nameInput} type="text" placeholder="Enter new cat's name"/>
-          <Image  className={styles.card}
-                  src={catImage.url}
-                  alt="New Cat image"
-                  placeholder="blur"
-                  blurDataURL={blurImage.src}
-                  width={200}
-                  height={200}
-          />
-          <div className={styles.creatorButtons}>
-            <IconButton
-              className={styles.saveButton}
-              onClick={handleSaveCat}
-              color="primary"
-              aria-label="upload picture"
-              component="label"
-            ><SaveIcon
-              color="success"/>
-            </IconButton>
-            <IconButton
-              className={styles.refreshButton}
-              onClick={handleClick}
-              color="primary"
-              aria-label="upload picture"
-              component="label"
-            ><RefreshIcon />
-            </IconButton>
+        <div className={styles.cardCreationContent}>
+          <div>
+            <input id="catNickname" className={styles.nameInput} type="text" placeholder="Enter new cat's name"/>
+            <div className={styles.creatorImage}>
+              <Image
+                fill
+                className={`${styles.card} ${styles.imageShadow}`}
+                src={catImage.url}
+                alt="New Cat image"
+                placeholder="blur"
+                blurDataURL="/blur.png"
+              />
+            </div>
+            <div className={styles.creatorButtons}>
+              <IconButton
+                className={styles.refreshButton}
+                onClick={handleClick}
+                color="primary"
+                aria-label="upload picture"
+                component="label"
+              ><RefreshIcon
+                fontSize="large"/>
+              </IconButton>
+              <IconButton
+                className={styles.saveButton}
+                onClick={handleSaveCat}
+                color="primary"
+                aria-label="upload picture"
+                component="label"
+              ><SaveIcon
+                color="success"
+                fontSize="large"/>
+              </IconButton>
+            </div>
           </div>
           <div>
             { success && successMessage &&
