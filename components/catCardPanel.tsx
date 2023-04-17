@@ -26,7 +26,7 @@ const CatCard = ({
   };
 
   return (
-    <div className={styles.cardContent}>
+    <div className={`${styles.cardContent} ${styles.imageShadow}`}>
       <h3
         id="nickname"
         className={styles.catNickname}
@@ -36,7 +36,8 @@ const CatCard = ({
       <div className={styles.card}>
         <Image
           fill
-          className={`${styles.herdImage} ${styles.imageShadow}`}
+          style={{objectFit:"cover"}}
+          className={`${styles.herdImage}`}
           src={imageURI}
           alt={`Picture of ${nickname}`}
           placeholder="blur"

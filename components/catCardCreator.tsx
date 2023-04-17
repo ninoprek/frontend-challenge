@@ -104,17 +104,18 @@ const CatCardCreator = ({ user, updateUser }: CatCardCreatorProps) => {
       { isLoading && <div className={styles.cardCreationContent}>{"Loading Image..."}</div> }
       { error && error instanceof Error && <div className={styles.cardCreationContent}> {`Cant load the image: ${error.message}`}</div> }
       { !isLoading && catImage &&
-        <div className={styles.cardCreationContent}>
+        <div className={`${styles.cardCreationContent} ${styles.continerShadow}`}>
           <div>
             <input id="catNickname" className={styles.nameInput} type="text" placeholder="Enter new cat's name"/>
             <div className={styles.creatorImage}>
               <Image
                 fill
-                className={`${styles.card} ${styles.imageShadow}`}
+                className={styles.card}
                 src={catImage.url}
                 alt="New Cat image"
                 placeholder="blur"
                 blurDataURL="/blur.png"
+                style={{objectFit:"cover"}}
               />
             </div>
             <div className={styles.creatorButtons}>
